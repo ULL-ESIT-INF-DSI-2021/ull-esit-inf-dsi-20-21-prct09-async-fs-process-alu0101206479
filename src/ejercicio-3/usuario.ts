@@ -24,20 +24,20 @@ export class Usuario {
    * @param nombre Nombre del usuario
    */
   constructor(private nombre: string) {
-    const directorioExiste: boolean = fs.existsSync(`src/aplicacion/usuarios/${this.nombre}`);
+    const directorioExiste: boolean = fs.existsSync(`src/ejercicio-3/usuarios/${this.nombre}`);
 
     if (directorioExiste) {
-      const ficheros = fs.readdirSync(`src/aplicacion/usuarios/${this.nombre}/`);
+      const ficheros = fs.readdirSync(`src/ejercicio-3/usuarios/${this.nombre}/`);
 
       ficheros.forEach((fichero) => {
-        const contenidoNota = fs.readFileSync(`src/aplicacion/usuarios/${this.nombre}/${fichero}`);
+        const contenidoNota = fs.readFileSync(`src/ejercicio-3/usuarios/${this.nombre}/${fichero}`);
         const notaJson = JSON.parse(contenidoNota.toString());
 
         const nota = new Nota(notaJson.titulo, notaJson.cuerpo, notaJson.color);
         this.notas.push(nota);
       });
     } else {
-      fs.mkdirSync(`src/aplicacion/usuarios/${this.nombre}`);
+      fs.mkdirSync(`src/ejercicio-3/usuarios/${this.nombre}`);
     }
   }
 
@@ -88,11 +88,11 @@ export class Usuario {
    * @param color Color de la nota
    */
   public añadirNota(titulo: string, cuerpo: string, color: string) {
-    const ficheroExiste: boolean = fs.existsSync(`src/aplicacion/usuarios/${this.nombre}/${titulo}.json`);
+    const ficheroExiste: boolean = fs.existsSync(`src/ejercicio-3/usuarios/${this.nombre}/${titulo}.json`);
 
     if (ficheroExiste == false) {
       this.notas.push(new Nota(titulo, cuerpo, color));
-      fs.writeFile(`src/aplicacion/usuarios/${this.nombre}/${titulo}.json`, `{\n\t"titulo": "${titulo}",\n\t"cuerpo": "${cuerpo}",\n\t"color": "${color}"\n}`, () => {
+      fs.writeFile(`src/ejercicio-3/usuarios/${this.nombre}/${titulo}.json`, `{\n\t"titulo": "${titulo}",\n\t"cuerpo": "${cuerpo}",\n\t"color": "${color}"\n}`, () => {
         console.log(chalk.green('New note added!'));
       });
     } else {
@@ -111,12 +111,12 @@ export class Usuario {
    * @param nuevoValor Nuevo valor que tendrá ese parámetro
    */
   public modificarNota(tituloNota: string, parametroEditar: string, nuevoValor: string) {
-    const ficheroExiste: boolean = fs.existsSync(`src/aplicacion/usuarios/${this.nombre}/${tituloNota}.json`);
+    const ficheroExiste: boolean = fs.existsSync(`src/ejercicio-3/usuarios/${this.nombre}/${tituloNota}.json`);
 
     if (ficheroExiste == false) {
       console.log(chalk.red("No note found"));
     } else {
-      const contenidoNota = fs.readFileSync(`src/aplicacion/usuarios/${this.nombre}/${tituloNota}.json`);
+      const contenidoNota = fs.readFileSync(`src/ejercicio-3/usuarios/${this.nombre}/${tituloNota}.json`);
       const dataJson = JSON.parse(contenidoNota.toString());
 
       let indice: number = 0;
@@ -130,22 +130,22 @@ export class Usuario {
 
       if (parametroEditar == "titulo") {
         this.notas[indice].setTitulo(nuevoValor);
-        fs.renameSync(`src/aplicacion/usuarios/${this.nombre}/${tituloNota}.json`, `src/aplicacion/usuarios/${this.nombre}/${nuevoValor}.json`);
-        fs.writeFile(`src/aplicacion/usuarios/${this.nombre}/${nuevoValor}.json`, `{\n\t"titulo": "${nuevoValor}",\n\t"cuerpo": "${dataJson.cuerpo}",\n\t"color": "${dataJson.color}"\n}`, () => {
+        fs.renameSync(`src/ejercicio-3/usuarios/${this.nombre}/${tituloNota}.json`, `src/ejercicio-3/usuarios/${this.nombre}/${nuevoValor}.json`);
+        fs.writeFile(`src/ejercicio-3/usuarios/${this.nombre}/${nuevoValor}.json`, `{\n\t"titulo": "${nuevoValor}",\n\t"cuerpo": "${dataJson.cuerpo}",\n\t"color": "${dataJson.color}"\n}`, () => {
           console.log(chalk.green('Note title modified!'));
         });
       }
 
       if (parametroEditar == "cuerpo") {
         this.notas[indice].setCuerpo(nuevoValor);
-        fs.writeFile(`src/aplicacion/usuarios/${this.nombre}/${dataJson.titulo}.json`, `{\n\t"titulo": "${dataJson.titulo}",\n\t"cuerpo": "${nuevoValor}",\n\t"color": "${dataJson.color}"\n}`, () => {
+        fs.writeFile(`src/ejercicio-3/usuarios/${this.nombre}/${dataJson.titulo}.json`, `{\n\t"titulo": "${dataJson.titulo}",\n\t"cuerpo": "${nuevoValor}",\n\t"color": "${dataJson.color}"\n}`, () => {
           console.log(chalk.green('Note body modified!'));
         });
       }
 
       if (parametroEditar == "color") {
         this.notas[indice].setColor(nuevoValor);
-        fs.writeFile(`src/aplicacion/usuarios/${this.nombre}/${dataJson.titulo}.json`, `{\n\t"titulo": "${dataJson.titulo}",\n\t"cuerpo": "${dataJson.cuerpo}",\n\t"color": "${nuevoValor}"\n}`, () => {
+        fs.writeFile(`src/ejercicio-3/usuarios/${this.nombre}/${dataJson.titulo}.json`, `{\n\t"titulo": "${dataJson.titulo}",\n\t"cuerpo": "${dataJson.cuerpo}",\n\t"color": "${nuevoValor}"\n}`, () => {
           console.log(chalk.green('Note color modified!'));
         });
       }
@@ -161,7 +161,7 @@ export class Usuario {
    * @param titulo Título de la nota que se quiere eliminar
    */
   public borrarNota(titulo: string) {
-    const ficheroExiste: boolean = fs.existsSync(`src/aplicacion/usuarios/${this.nombre}/${titulo}.json`);
+    const ficheroExiste: boolean = fs.existsSync(`src/ejercicio-3/usuarios/${this.nombre}/${titulo}.json`);
 
     if (ficheroExiste == false) {
       console.log(chalk.red("No note found"));
@@ -176,7 +176,7 @@ export class Usuario {
       });
       this.notas.splice(indice, 1);
 
-      fs.rm(`src/aplicacion/usuarios/${this.nombre}/${titulo}.json`, () => {
+      fs.rm(`src/ejercicio-3/usuarios/${this.nombre}/${titulo}.json`, () => {
         console.log(chalk.green('Note removed!'));
       });
     }
@@ -222,7 +222,7 @@ export class Usuario {
    * @param titulo Título de la nota que se quiere leer
    */
   public leerNota(titulo: string) {
-    const ficheroExiste: boolean = fs.existsSync(`src/aplicacion/usuarios/${this.nombre}/${titulo}.json`);
+    const ficheroExiste: boolean = fs.existsSync(`src/ejercicio-3/usuarios/${this.nombre}/${titulo}.json`);
 
     if (ficheroExiste == false) {
       console.log(chalk.red("Note not found"));

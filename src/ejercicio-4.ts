@@ -3,22 +3,17 @@ import {spawn} from 'child_process';
 import yargs = require('yargs');
 
 function comandoUno(ruta: string) {
-  if (!fs.existsSync(`${ruta}`)) {
-    console.log(`\n¡ERROR! No existe el directorio o el fichero ${ruta} indicado en el parámetro --ruta\n`);
-    return;
-  }
-
-  const ls = spawn('ls', ['-ld', `${ruta}`]);
-
-  let lsOutput = '';
-  ls.stdout.on('data', (piece) => lsOutput += piece);
-
-  ls.on('close', () => {
-    const lsOutputAsArray = lsOutput.split(/\s+/);
-    if (lsOutputAsArray[0][0] == "d") {
-      console.log(`\nLa ruta "${ruta}" es un directorio\n`);
+  fs.access(ruta, (err) => {
+    if (err) {
+      console.log(`\n¡ERROR! No existe el directorio o el fichero "${ruta}" indicado en el parámetro --ruta\n`);
     } else {
-      console.log(`\nLa ruta "${ruta}" es un fichero\n`);
+      fs.open(ruta, fs.constants.O_DIRECTORY, (err) => {
+        if (err) {
+          console.log(`\nLa ruta "${ruta}" es un fichero\n`);
+        } else {
+          console.log(`\nLa ruta "${ruta}" es un directorio\n`);
+        }
+      });
     }
   });
 }
@@ -42,32 +37,18 @@ yargs.command( {
 
 
 function comandoDos(ruta: string) {
-  if (fs.existsSync(`${ruta}`)) {
-    console.log(`\n¡ERROR! No se ha podido crear el directorio debido a que ya existe la ruta ${ruta}, indicada en el parámetro --ruta\n`);
-    return;
-  }
-
-  let cont = ruta.length-1;
-  while (ruta[cont] == "/") { // Le quitamos las / del final, debido a que el usuario puede haberlas introducido en el final de la ruta, y esto nos puede perjudicar posteriormente a la hora de revisar si la ruta en la que se quiere crear el directorio existe
-    ruta = ruta.substring(0, cont);
-    cont--;
-  }
-
-  const analizaRuta = ruta.split(/\//g);
-  let aux = analizaRuta[0];
-
-  for (let i = 1; i < analizaRuta.length-1; i++) {
-    aux = aux+"/"+analizaRuta[i];
-    if (!fs.existsSync(`${aux}`)) {
-      console.log(`\n¡ERROR! No se puede crear el directorio debido a que no existe la ruta "${aux}", indicada en el parámetro --ruta\n`);
-      return;
+  fs.access(ruta, (err) => {
+    if (!err) {
+      console.log(`\n¡ERROR! No se ha podido crear el directorio debido a que ya existe la ruta "${ruta}", indicada en el parámetro --ruta\n`);
+    } else {
+      fs.mkdir(ruta, (err) => {
+        if (err) {
+          console.log(`\n¡ERROR! Ha habido un problema al intentar crear el directorio, puede ser porque la ruta especificada en el parámetro --ruta no existe\n`);
+        } else {
+          console.log(`\nDirectorio "${ruta}" creado\n`);
+        }
+      });
     }
-  }
-
-  const ls = spawn('mkdir', [`${ruta}`]);
-
-  ls.on('close', () => {
-    console.log(`\nDirectorio "${ruta}" creado\n`);
   });
 }
 
@@ -90,14 +71,15 @@ yargs.command( {
 
 
 function comandoTres(ruta: string) {
-  if (!fs.existsSync(`${ruta}`)) {
-    console.log(`\n¡ERROR! No existe el directorio ${ruta}, indicado en el parámetro --ruta\n`);
-    return;
-  }
-
-  console.log();
-  const ls = spawn('ls', [`${ruta}`]);
-  ls.stdout.pipe(process.stdout);
+  fs.access(ruta, (err) => {
+    if (err) {
+      console.log(`\n¡ERROR! No existe el directorio "${ruta}", indicado en el parámetro --ruta\n`);
+    } else {
+      console.log();
+      const ls = spawn('ls', [ruta]);
+      ls.stdout.pipe(process.stdout);
+    }
+  });
 }
 
 yargs.command( {
@@ -119,23 +101,19 @@ yargs.command( {
 
 
 function comandoCuatro(ruta: string) {
-  if (!fs.existsSync(`${ruta}`)) {
-    console.log(`\n¡ERROR! No existe el fichero ${ruta}, indicado en el parámetro --ruta\n`);
-    return;
-  }
-
-  const ls = spawn('ls', ['-ld', `${ruta}`]);
-
-  let lsOutput = '';
-  ls.stdout.on('data', (piece) => lsOutput += piece);
-
-  ls.on('close', () => {
-    const lsOutputAsArray = lsOutput.split(/\s+/);
-    if (lsOutputAsArray[0][0] == "d") {
-      console.log(`\n¡ERROR! "${ruta}" es un directorio, indicado en el parámetro --ruta\n`);
+  fs.access(ruta, (err) => {
+    if (err) {
+      console.log(`\n¡ERROR! No existe el fichero "${ruta}", indicado en el parámetro --ruta\n`);
     } else {
-      const cat = spawn('cat', [`${ruta}`]);
-      cat.stdout.pipe(process.stdout);
+      fs.open(ruta, fs.constants.O_DIRECTORY, (err) => {
+        if (err) {
+          console.log();
+          const cat = spawn('cat', [ruta]);
+          cat.stdout.pipe(process.stdout);
+        } else {
+          console.log(`\n¡ERROR! La ruta "${ruta}", indicada en el parámetro --ruta es un directorio\n`);
+        }
+      });
     }
   });
 }
@@ -159,13 +137,21 @@ yargs.command( {
 
 
 function comandoCinco(ruta: string) {
-  if (!fs.existsSync(`${ruta}`)) {
-    console.log(`\n¡ERROR! No existe el fichero ${ruta}, indicado en el parámetro --ruta\n`);
-    return;
-  }
+  fs.access(ruta, (err) => {
+    if (err) {
+      console.log(`\n¡ERROR! No existe el fichero "${ruta}", indicado en el parámetro --ruta\n`);
+    } else {
+      const rm = spawn('rm', ['-rf', ruta]);
 
-  const rm = spawn('rm', ['-rf', `${ruta}`]);
-  rm.stdout.pipe(process.stdout);
+      rm.on('close', (err) => {
+        if (err) {
+          console.log(`\nHa habido un error al intentar borrar "${ruta}"\n`);
+        } else {
+          console.log(`\n"${ruta}" eliminado correctemente\n`);
+        }
+      });
+    }
+  });
 }
 
 yargs.command( {
@@ -187,32 +173,19 @@ yargs.command( {
 
 
 function comandoSeis(rutaOrigen: string, rutaDestino: string) {
-  if (!fs.existsSync(`${rutaOrigen}`)) {
-    console.log(`\n¡ERROR! No existe el fichero ${rutaOrigen}, indicado en el parámetro --rutaOrigen\n`);
-    return;
-  }
-
-  let cont = rutaDestino.length-1;
-  while (rutaDestino[cont] == "/") { // Le quitamos las / del final, debido a que el usuario puede haberlas introducido en el final de la ruta, y esto nos puede perjudicar posteriormente a la hora de revisar si la ruta en la que se quiere crear el directorio existe
-    rutaDestino = rutaDestino.substring(0, cont);
-    cont--;
-  }
-
-  const analizaRuta = rutaDestino.split(/\//g);
-  let aux = analizaRuta[0];
-
-  for (let i = 1; i < analizaRuta.length-1; i++) {
-    aux = aux+"/"+analizaRuta[i];
-    if (!fs.existsSync(`${aux}`)) {
-      console.log(`\n¡ERROR! No se puede copiar debido a que no existe la ruta "${aux}", indicada en el parámetro --rutaDestino\n`);
-      return;
+  fs.access(`${rutaOrigen}`, (err) => {
+    if (err) {
+      console.log(`\n¡ERROR! No existe el fichero ${rutaOrigen}, indicado en el parámetro --rutaOrigen\n`);
+    } else {
+      fs.copyFile(rutaOrigen, rutaDestino, (err) => {
+        if (err) {
+          console.log(`\n¡ERROR! Ha habido un fallo al intentar copiar el archivo "${rutaOrigen}" en "${rutaDestino}, puede ser porque la última ruta, indicada en el parámetro --rutaDestino, no existe o esta mal puesta\n`);
+        } else {
+          console.log(`\nFichero "${rutaOrigen}" copiado satisfactoriamente en "${rutaDestino}"\n`);
+        }
+      });
     }
-  }
-
-  const cp = spawn('cp', ['-r', `${rutaOrigen}`, `${rutaDestino}`]);
-  cp.stdout.pipe(process.stdout);
-
-  console.log("\nFichero copiado correctamente\n");
+  });
 }
 
 yargs.command( {
