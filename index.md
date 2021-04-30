@@ -38,7 +38,7 @@ Cabe destacar que también se debe aportar la documentación mediante el uso de 
 
 
 
-##### Ejercicio 1 - El combate definitivo
+##### Ejercicio 1
 En este ejercicio disponiamos de un código de ejemplo el cual es el siguiente:
 
 ```typescript
@@ -81,7 +81,7 @@ El objeto constants sirve para realizar las operaciones del sistema de archivos,
 
 
 
-##### Ejercicio 1 - El combate definitivo
+##### Ejercicio 2
 En este ejercicio disponiamos de un código de ejemplo el cual es el siguiente:
 
 
