@@ -2,6 +2,14 @@ import * as fs from 'fs';
 import {spawn} from 'child_process';
 import yargs = require('yargs');
 
+/**
+ * ```typescript
+ * // Ejemplo de llamada
+ *  comandoUno("src");
+ * ```
+ * Función que dada una ruta concreta, muestra si es un directorio o un fichero
+ * @param ruta Ruta a examinar
+ */
 function comandoUno(ruta: string) {
   fs.access(ruta, (err) => {
     if (err) {
@@ -18,6 +26,9 @@ function comandoUno(ruta: string) {
   });
 }
 
+/**
+ * Comando para llamar a la función del punto 1 del ejercicio 4 (Muestra si una ruta es un directorio o un fichero)
+ */
 yargs.command( {
   command: 'uno',
   describe: 'Dada una ruta concreta, muestra si es un directorio o un fichero.',
@@ -36,6 +47,14 @@ yargs.command( {
 });
 
 
+/**
+ * ```typescript
+ * // Ejemplo de llamada
+ *  comandoDos("src/ejercicio-5");
+ * ```
+ * Función que crea un nuevo directorio a partir de una ruta que recibe como parámetro
+ * @param ruta Ruta donde se creará el directorio
+ */
 function comandoDos(ruta: string) {
   fs.access(ruta, (err) => {
     if (!err) {
@@ -52,6 +71,9 @@ function comandoDos(ruta: string) {
   });
 }
 
+/**
+ * Comando para llamar a la función del punto 2 del ejercicio 4 (Crea un nuevo directorio a partir de una ruta que se pasa como parámetro)
+ */
 yargs.command( {
   command: 'dos',
   describe: 'Crear un nuevo directorio a partir de una nueva ruta que recibe como parámetro.',
@@ -70,6 +92,14 @@ yargs.command( {
 });
 
 
+/**
+ * ```typescript
+ * // Ejemplo de llamada
+ *  comandoTres("src");
+ * ```
+ * Función que lista los ficheros dentro de un directorio
+ * @param ruta Directorio que se quiere listar
+ */
 function comandoTres(ruta: string) {
   fs.access(ruta, (err) => {
     if (err) {
@@ -82,6 +112,9 @@ function comandoTres(ruta: string) {
   });
 }
 
+/**
+ * Comando para llamar a la función del punto 3 del ejercicio 4 (Lista los ficheros dentro de un directorio especificado por parámetro)
+ */
 yargs.command( {
   command: 'tres',
   describe: 'Listar los ficheros dentro de un directorio.',
@@ -100,6 +133,14 @@ yargs.command( {
 });
 
 
+/**
+ * ```typescript
+ * // Ejemplo de llamada
+ *  comandoCuatro("src/ejercicio-1.ts");
+ * ```
+ * Función que muestra el contenido de un fichero
+ * @param ruta Fichero del que se quiere ver el contenido
+ */
 function comandoCuatro(ruta: string) {
   fs.access(ruta, (err) => {
     if (err) {
@@ -118,6 +159,9 @@ function comandoCuatro(ruta: string) {
   });
 }
 
+/**
+ * Comando para llamar a la función del punto 4 del ejercicio 4 (Muestra el contenido de un directorio especificado por parámetro)
+ */
 yargs.command( {
   command: 'cuatro',
   describe: 'Mostrar el contenido de un fichero (similar a ejecutar el comando cat)',
@@ -136,6 +180,14 @@ yargs.command( {
 });
 
 
+/**
+ * ```typescript
+ * // Ejemplo de llamada
+ *  comandoCinco("src");
+ * ```
+ * Función que borra ficheros y directorios
+ * @param ruta Fichero o directorio a borrar
+ */
 function comandoCinco(ruta: string) {
   fs.access(ruta, (err) => {
     if (err) {
@@ -154,6 +206,9 @@ function comandoCinco(ruta: string) {
   });
 }
 
+/**
+ * Comando para llamar a la función del punto 5 del ejercicio 4 (Borra ficheros y directorios especificados por parámetros)
+ */
 yargs.command( {
   command: 'cinco',
   describe: 'Borrar ficheros y directorios',
@@ -172,6 +227,15 @@ yargs.command( {
 });
 
 
+/**
+ * ```typescript
+ * // Ejemplo de llamada
+ *  comandoSeis("helloworld.txt", "src/ejercicio-3/helloworld.txt");
+ * ```
+ * Función que mueve y copia ficheros y/o directorios de una ruta a otra
+ * @param rutaOrigen Ruta dónde se encuentra el fichero y/o directorio
+ * @param rutaDestino Ruta donde se quiere copiar y mover el fichero y/o directorio
+ */
 function comandoSeis(rutaOrigen: string, rutaDestino: string) {
   fs.access(`${rutaOrigen}`, (err) => {
     if (err) {
@@ -188,6 +252,9 @@ function comandoSeis(rutaOrigen: string, rutaDestino: string) {
   });
 }
 
+/**
+ * Comando para llamar a la función del punto 6 del ejercicio 4 (Mueve y copia ficheros y/o directorios de una ruta a otra, las dos especificadas por parámetros)
+ */
 yargs.command( {
   command: 'seis',
   describe: 'Mueve y copia ficheros de una ruta a otra',

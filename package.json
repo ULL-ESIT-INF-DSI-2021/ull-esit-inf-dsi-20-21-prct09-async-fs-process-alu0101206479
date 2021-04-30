@@ -1,26 +1,25 @@
 {
-  "name": "ull-esit-inf-dsi-20-21-prct08-filesystem-notes-app-alu0101206479",
+  "name": "ull-esit-inf-dsi-20-21-prct09-async-fs-process-alu0101206479",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "coverage": "nyc npm test && nyc report --reporter=lcov",
-    "start1": "tsc-watch --onSuccess \"node dist/ejercicio-1.js\"",
-    "start2": "tsc-watch --onSuccess \"node dist/ejercicio-2.js\"",
+    "start1": "tsc-watch --onSuccess \"node dist/ejercicio-1.js helloworld.txt\"",
     "doc": "typedoc"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ULL-ESIT-INF-DSI-2021/ull-esit-inf-dsi-20-21-prct08-filesystem-notes-app-alu0101206479.git"
+    "url": "git+https://github.com/ULL-ESIT-INF-DSI-2021/ull-esit-inf-dsi-20-21-prct09-async-fs-process-alu0101206479.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ULL-ESIT-INF-DSI-2021/ull-esit-inf-dsi-20-21-prct08-filesystem-notes-app-alu0101206479/issues"
+    "url": "https://github.com/ULL-ESIT-INF-DSI-2021/ull-esit-inf-dsi-20-21-prct09-async-fs-process-alu0101206479/issues"
   },
-  "homepage": "https://github.com/ULL-ESIT-INF-DSI-2021/ull-esit-inf-dsi-20-21-prct08-filesystem-notes-app-alu0101206479#readme",
+  "homepage": "https://github.com/ULL-ESIT-INF-DSI-2021/ull-esit-inf-dsi-20-21-prct09-async-fs-process-alu0101206479#readme",
   "devDependencies": {
     "@types/chai": "^4.2.17",
     "@types/mocha": "^8.2.2",

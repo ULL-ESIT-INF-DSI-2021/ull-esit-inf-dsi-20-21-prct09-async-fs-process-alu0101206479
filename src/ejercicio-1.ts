@@ -24,6 +24,8 @@ if (process.argv.length !== 3) {
 
 
 /**
+ * TRAZA DE LO QUE SE EJECUTA EN ESTE FICHERO
+ *
  *   Inicio, TODO VACÍO
  *
  *   | Pila de llamadas |           | Registro de eventos |           | Cola de manejadores |           | Salida |
@@ -109,8 +111,7 @@ if (process.argv.length !== 3) {
  *   |   Pila de llamadas  |           | Registro de eventos  |           | Cola de manejadores |           |                 Salida                |
  *   |---------------------|           |----------------------|           |---------------------|           |---------------------------------------|
  *   | manejador de access |           | watcher.on('change') |           |---------------------|           | Starting to watch file helloworld.txt |
- *   |         main        |           |----------------------|                                             |---------------------------------------|
- *   |---------------------|
+ *   |---------------------|           |----------------------|                                             |---------------------------------------|
  *
  *   Decimo-segundo paso: COMO LA FUNCIÓN watcher.on('change') SE QUEDA ESPERANDO A QUE SE EDITE EL FICHERO, EL PROGRAMA SIGUE SU FLUJO DE EJECUCIÓN, POR LO QUE SE INTRODUCE console.log(`File ${filename} is no longer watched`) EN LA PILA DE LLAMADAS
  *
@@ -118,7 +119,6 @@ if (process.argv.length !== 3) {
  *   |------------------------------------------------------|           |----------------------|           |---------------------|           |---------------------------------------|
  *   | console.log(`File ${filename} is no longer watched`) |           | watcher.on('change') |           |---------------------|           | Starting to watch file helloworld.txt |
  *   |                 manejador de access                  |           |----------------------|                                             |---------------------------------------|
- *   |                         main                         |
  *   |------------------------------------------------------|
  *
  *   Decimo-tercer paso: SE EJECUTA EL console.log(`File ${filename} is no longer watched`) Y PASA LA SALIDA A LA TABLA DE SALIDA

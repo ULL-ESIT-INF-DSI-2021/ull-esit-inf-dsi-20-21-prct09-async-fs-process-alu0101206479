@@ -1,6 +1,15 @@
 import * as fs from 'fs';
 import yargs = require('yargs');
 
+/**
+ * ```typescript
+ * // Ejemplo de llamada
+ *  aplicacion("alu0101206479", "src/ejercicio-3/usuarios");
+ * ```
+ * Función que controla los cambios realizados sobre todo el directorio especificado al mismo tiempo que dicho usuario interactúa con la aplicación de procesamiento de notas.
+ * @param usuario Usurario de la aplicación de notas al que queremos controlarle el directorio
+ * @param ruta Ruta dónde se almacenan los directorios de los usuarios
+ */
 function aplicacion(usuario: string, ruta: string) {
   let directorioUsuario = `${ruta}${usuario}`;
   if (ruta[ruta.length-1] != "/") {
@@ -68,9 +77,12 @@ function aplicacion(usuario: string, ruta: string) {
 }
 
 
+/**
+ * Comando para llamar a la función de encima (Vígila el directorio del usuario que le pasemos indicandole la ruta donde se almacena el directorio de este usuario)
+ */
 yargs.command( {
   command: 'watch',
-  describe: 'Dada una ruta concreta, muestra si es un directorio o un fichero.',
+  describe: 'La terminal se queda congelada esperando a un cambio en el directorio del usuario',
   builder: {
     usuario: {
       describe: 'Nombre de usuario del usuario',
